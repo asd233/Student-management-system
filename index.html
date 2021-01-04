@@ -6,30 +6,14 @@
     <title>学生信息管理中心</title>
     <script src="../lib/node_modules/_vue@2.6.12@vue/dist/vue.js"></script>
     <script src="../lib/node_modules/_axios@0.21.1@axios/dist/axios.js"></script>
-    <style type="text/css">
-        .pageList a {
-            padding: 3px 8px;
-            text-decoration: none;
-            margin: 0px 3px;
-            border: 1px solid #ccc;
-        }
-
-        .pageList a:hover {
-            color: red;
-            background-color: #99cc00;
-        }
-
-        .pageList span {
-            padding: 3px 8px;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
     <div id="app">
         <div style="text-align:center;padding-bottom: 10px;">
             <h2>学生信息管理中心</h2>
-            <a href="./add.php">添加学生</a>
+            <a @click.prev="addShow()">添加学生</a>
             共有<font color=red>
                 {{studentNum}}
             </font>个学生信息
@@ -59,6 +43,67 @@
             </tr>
         </table>
     </div>
+    <div id="add" v-show="display">
+        <div id="addCover"></div>
+        <div class="addTip">
+            <div style="text-align:center;padding-bottom: 10px;">
+                <h2>学生信息管理中心——添加学生</h2>
+                <a @click.prev="addHide()">返回</a>
+            </div>
+
+            <form method="post" action="">
+                <table width="400" bordercolor="#ccc" border="1" rules="all" align="center" cellpadding="5">
+                    <tr>
+                        <td width="80" align="right">姓名：</td>
+                        <td><input type="text" name="name"></td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">性别：</td>
+                        <td>
+                            <input type="radio" name="sex" value="男" checked>男
+                            <input type="radio" name="sex" value="女">女
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">年龄：</td>
+                        <td><input type="text" name="age"></td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">学历：</td>
+                        <td>
+                            <select name="edu">
+                                <option value="1">初中</option>
+                                <option value="2">高中</option>
+                                <option value="3" selected="selected">大专</option>
+                                <option value="4">本科</option>
+                                <option value="5">研究生</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">工资：</td>
+                        <td><input type="text" name="salary"></td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">奖金：</td>
+                        <td><input type="text" name="bonus"></td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">籍贯：</td>
+                        <td><input type="text" name="city"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <input type="submit" value="提交">
+                            <input type="hidden" name="token" value="add">
+                            <input type="reset" value="重置">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
 </body>
 <script>
     var app = new Vue({
@@ -78,6 +123,9 @@
                     location.href = "./delete.php?id=" + id;
                 }
             },
+            addShow() {
+                addTip.display = true;
+            },
             load(pagesIndex) {
                 this.checkPageIndex = pagesIndex;
                 let url = "./list.php?page=" + pagesIndex;
@@ -86,12 +134,10 @@
                     app.studentNum = response.data.records;
                     app.pagesSize = response.data.pagesize;
                     if (app.studentNum / app.pagesSize <= 10 || app.checkPageIndex < 6) {
-                        console.log(1);
                         for (let i = 0; i < 10; i++) {
                             app.pagesValue[i] = i + 1;
                         }
                     } else if (app.checkPageIndex - 1 < app.studentNum / app.pagesSize - 4) {
-                        console.log(2);
                         app.pagesValue[5] = app.checkPageIndex;
                         let start = 0;
                         let end = 6;
@@ -106,7 +152,6 @@
                         }
 
                     } else if (app.checkPageIndex > app.studentNum / app.pagesSize - 4) {
-                        console.log(546546);
                         let start = 0;
                         for (let i = app.studentNum / app.pagesSize - 10; i < app.studentNum / app.pagesSize; i++) {
                             app.pagesValue[start] = i + 1;
@@ -123,6 +168,17 @@
         created() {
             this.load(1);
         },
+    })
+    var addTip = new Vue({
+        el: "#add",
+        data: {
+            display: false,
+        },
+        methods: {
+            addHide() {
+                addTip.display = false;
+            }
+        }
     })
 </script>
 
