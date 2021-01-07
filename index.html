@@ -55,23 +55,23 @@
                 <table width="400" bordercolor="#ccc" border="1" rules="all" align="center" cellpadding="5">
                     <tr>
                         <td width="80" align="right">姓名：</td>
-                        <td><input type="text" name="name"></td>
+                        <td><input type="text" name="name" v-model="formData.name"></td>
                     </tr>
                     <tr>
                         <td width="80" align="right">性别：</td>
                         <td>
-                            <input type="radio" name="sex" value="男" checked>男
-                            <input type="radio" name="sex" value="女">女
+                            <input type="radio" name="sex" value="男" v-model="formData.sex" checked>男
+                            <input type="radio" name="sex" value="女" v-model="formData.sex">女
                         </td>
                     </tr>
                     <tr>
                         <td width="80" align="right">年龄：</td>
-                        <td><input type="text" name="age"></td>
+                        <td><input type="text" name="age" v-model="formData.age"></td>
                     </tr>
                     <tr>
                         <td width="80" align="right">学历：</td>
                         <td>
-                            <select name="edu">
+                            <select name="edu" v-model="formData.edu">
                                 <option value="1">初中</option>
                                 <option value="2">高中</option>
                                 <option value="3" selected="selected">大专</option>
@@ -82,21 +82,20 @@
                     </tr>
                     <tr>
                         <td width="80" align="right">工资：</td>
-                        <td><input type="text" name="salary"></td>
+                        <td><input type="text" name="salary" v-model="formData.salary"></td>
                     </tr>
                     <tr>
                         <td width="80" align="right">奖金：</td>
-                        <td><input type="text" name="bonus"></td>
+                        <td><input type="text" name="bonus" v-model="formData.bonus"></td>
                     </tr>
                     <tr>
                         <td width="80" align="right">籍贯：</td>
-                        <td><input type="text" name="city"></td>
+                        <td><input type="text" name="city" v-model="formData.city"></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" value="提交">
-                            <input type="hidden" name="token" value="add">
+                            <input type="button" value="提交" @click="addStudentData()">
                             <input type="reset" value="重置">
                         </td>
                     </tr>
@@ -173,10 +172,38 @@
         el: "#add",
         data: {
             display: false,
+            formData: {
+                name: "",
+                sex: "",
+                age: "",
+                edu: "",
+                salary: "",
+                bonus: "",
+                city: ""
+            }
         },
         methods: {
             addHide() {
-                addTip.display = false;
+                this.display = false;
+            },
+            addStudentData() {
+                let param = new URLSearchParams();
+                for (const key in this.formData) {
+                    if (this.formData[key] === "") {
+                        alert('请完整填写数据');
+                        return;
+                    } else {
+                        param.append(key, this.formData[key]);
+                    }
+                }
+                axios.post("./add.php", param).then(
+                    function (response) {
+                        for (const key in addTip.formData) {
+                            addTip.formData[key] = "";
+                        }
+                        alert(response.data);
+                    }
+                )
             }
         }
     })
