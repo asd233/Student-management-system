@@ -3,7 +3,7 @@
 $db_host = "localhost";	//主机名  localhost:3306
 $db_port = "3306";		//端口号
 $db_user = "root";		//用户名
-$db_pass = "";		//密码
+$db_pass = "root";		//密码
 $db_name = "student";	//数据库名
 $charset = "utf8";		//字符集
 
