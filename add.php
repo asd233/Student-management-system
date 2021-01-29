@@ -2,7 +2,6 @@
 //包含连接数据库的公共文件
 require_once("./conn.php");
 
-//判断表单是否合法提交(防止黑客攻击) 
 	//获取表单提交数据
 	$name	= $_POST['name'];
 	$sex	= $_POST['sex'];
@@ -18,5 +17,7 @@ require_once("./conn.php");
 	{
 		echo "记录添加成功！";
 		die(); //中止程序向下运行
-	}
+	}else{
+     echo "您输入的数据格式有误，请检查后再次提交";   
+    }
 ?>
