@@ -6,6 +6,7 @@
     <title>学生信息管理中心</title>
     <script src="../lib/node_modules/_vue@2.6.12@vue/dist/vue.js"></script>
     <script src="../lib/node_modules/_axios@0.21.1@axios/dist/axios.js"></script>
+    <script src="../lib/node_modules/_jquery@3.5.1@jquery/dist/jquery.js"></script>
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -13,13 +14,13 @@
     <div id="app">
         <div style="text-align:center;padding-bottom: 10px;">
             <h2>学生信息管理中心</h2>
-            <a @click.prev="addShow()">添加学生</a>
+            <a @click.prev="addTipShow()">添加学生</a>
             共有<font color=red>
                 {{studentNum}}
             </font>个学生信息
         </div>
         <table width="600" border="1" align="center" rules="all" cellpadding="5">
-            <tr bgcolor='#ccc'>
+            <tr style="background-color: #ccc;">
                 <th>编号</th>
                 <th>姓名</th>
                 <th>性别</th>
@@ -32,7 +33,7 @@
             </tr>
             <tr v-for="(student,i) in students">
                 <td v-for="(studentValue,y) in students[i]"> {{studentValue}}</td>
-                <td><a>修改</a> <a @click.prev="confirmDel(student.id)">删除</a></td>
+                <td><a @click.prev="upDateTipShow($event)">修改</a> <a @click.prev="confirmDel(student.id)">删除</a></td>
             </tr>
             <tr>
                 <td colspan="9" align="center" height="50" class="pageList">
@@ -43,12 +44,12 @@
             </tr>
         </table>
     </div>
-    <div id="tip" v-show="display">
-        <div id="addCover"></div>
+    <div id="addTip" class="tip" v-show="display">
+        <div id="cover"></div>
         <div class="tipBody">
             <div style="text-align:center;padding-bottom: 10px;">
                 <h2>学生信息管理中心——添加学生</h2>
-                <a @click.prev="tipHide()">返回</a>
+                <a @click.prev="addTipHide()">返回</a>
             </div>
 
             <form method="post" action="">
@@ -103,6 +104,66 @@
             </form>
         </div>
     </div>
+    <div id="upDateTip" class="tip" v-show="display">
+        <div id="cover"></div>
+        <div class="tipBody">
+            <div style="text-align:center;padding-bottom: 10px;">
+                <h2>学生信息管理中心——修改学生信息</h2>
+                <a @click.prev="upDateTipHide()">返回</a>
+            </div>
+
+            <form method="post" action="">
+                <table width="400" bordercolor="#ccc" border="1" rules="all" align="center" cellpadding="5">
+                    <tr>
+                        <td width="80" align="right">姓名：</td>
+                        <td><input type="text" name="name" v-model="formData.name"></td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">性别：</td>
+                        <td>
+                            <input type="radio" name="sex" value="男" v-model="formData.sex" checked>男
+                            <input type="radio" name="sex" value="女" v-model="formData.sex">女
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">年龄：</td>
+                        <td><input type="text" name="age" v-model="formData.age"></td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">学历：</td>
+                        <td>
+                            <select name="edu" v-model="formData.edu">
+                                <option value="1">初中</option>
+                                <option value="2">高中</option>
+                                <option value="3" selected="selected">大专</option>
+                                <option value="4">本科</option>
+                                <option value="5">研究生</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">工资：</td>
+                        <td><input type="text" name="salary" v-model="formData.salary"></td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">奖金：</td>
+                        <td><input type="text" name="bonus" v-model="formData.bonus"></td>
+                    </tr>
+                    <tr>
+                        <td width="80" align="right">籍贯：</td>
+                        <td><input type="text" name="city" v-model="formData.city"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <input type="button" value="提交" @click="upDate()">
+                            <input type="reset" value="重置">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
 </body>
 <script>
     var app = new Vue({
@@ -131,8 +192,15 @@
                     });
                 }
             },
-            addShow() {
+            addTipShow() {
                 addTip.display = true;
+            },
+            upDateTipShow(event) {
+                upDateTip.display = true;
+                for (const key in upDateTip.formData) {
+                    upDateTip.formData[key] = this.students[key];
+                }
+                upDateTip.formData = Object.assign({}, this.students[$(event.target).parent().parent().index() - 1]);
             },
             load(pagesIndex) {
                 this.checkPageIndex = pagesIndex;
@@ -178,7 +246,7 @@
         },
     })
     var addTip = new Vue({
-        el: "#tip",
+        el: "#addTip",
         data: {
             display: false,
             formData: {
@@ -192,23 +260,61 @@
             }
         },
         methods: {
-            tipHide() {
+            addTipHide() {
                 this.display = false;
             },
             addStudentData() {
-                let param = new URLSearchParams();
                 for (const key in this.formData) {
                     if (this.formData[key] === "") {
                         alert('请完整填写数据');
                         return;
-                    } else {
-                        param.append(key, this.formData[key]);
                     }
                 }
-                axios.post("./add.php", param).then(
+                axios.post("./add.php", this.formData).then(
                     function (response) {
+                        //清空表格
                         for (const key in addTip.formData) {
                             addTip.formData[key] = "";
+                        }
+                        alert(response.data);
+                        location.reload();
+                    }
+                )
+            }
+        }
+
+    })
+    var upDateTip = new Vue({
+        el: "#upDateTip",
+        data: {
+            display: false,
+            formData: {
+                id: "",
+                name: "",
+                sex: "",
+                age: "",
+                edu: "",
+                salary: "",
+                bonus: "",
+                city: ""
+            }
+        },
+        methods: {
+            upDateTipHide() {
+                this.display = false;
+            },
+            upDate() {
+                for (const key in this.formData) {
+                    if (this.formData[key] === "") {
+                        alert('请完整填写数据');
+                        return;
+                    }
+                }
+                axios.post("./update.php", this.formData).then(
+                    function (response) {
+                        //清空表格
+                        for (const key in addTip.formData) {
+                            upDateTip.formData[key] = "";
                         }
                         alert(response.data);
                         location.reload();
