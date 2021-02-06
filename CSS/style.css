@@ -1,6 +1,14 @@
 [v-cloak] {
   display: none;
 }
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+.v-enter,
+.v-leave-to {
+  opacity: 0;
+}
 a {
   cursor: pointer;
   color: #3a3af5;
@@ -24,9 +32,9 @@ form {
 .tip .tipBody {
   position: absolute;
   top: 20%;
-  left: 35%;
+  left: 30%;
   width: 500px;
-  height: 400px;
+  height: 420px;
   border: 1px solid #000000;
   border-radius: 15px;
   background-color: #ffffff;
