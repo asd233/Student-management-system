@@ -11,13 +11,11 @@ var app = new Vue({
         confirmDel(id) {
             //询问是否要删除？
             if (window.confirm("你真的要删除吗？")) {
-                //如果单击"确定"按钮，跳转到delete.php页面
-                // location.href = "./delete.php?id=" + id;
                 let url = "./PHP/delete.php?id=" + id;
                 axios.get(url).then(function (response) {
                     if (response) {
                         alert("删除成功");
-                        location.reload();
+                        load(checkPageIndex);
                     } else {
                         alert("删除失败");
                     }
@@ -106,7 +104,7 @@ var addTip = new Vue({
                         addTip.formData[key] = "";
                     }
                     alert(response.data);
-                    location.reload();
+                    app.load(app.checkPageIndex);
                 }
             )
         }
@@ -146,7 +144,7 @@ var upDateTip = new Vue({
                         upDateTip.formData[key] = "";
                     }
                     alert(response.data);
-                    location.reload();
+                    app.load(app.checkPageIndex);
                 }
             )
         }
