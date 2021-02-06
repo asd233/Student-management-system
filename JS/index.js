@@ -106,7 +106,7 @@ var addTip = new Vue({
                         addTip.formData[key] = "";
                     }
                     alert(response.data);
-                    location.reload();
+                    app.load(app.checkPageIndex);
                 }
             )
         }
@@ -146,7 +146,7 @@ var upDateTip = new Vue({
                         upDateTip.formData[key] = "";
                     }
                     alert(response.data);
-                    location.reload();
+                    app.load(app.checkPageIndex);
                 }
             )
         }
