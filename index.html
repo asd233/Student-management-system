@@ -16,7 +16,7 @@
     <div id="app" v-cloak>
         <div style="text-align:center;padding-bottom: 10px;">
             <h2>学生信息管理中心</h2>
-            <a @click.prev="addTipShow()">添加学生</a>
+            <a class="btn btn-default" @click.prev="addTipShow()">添加学生</a>
             共有<font color=red>
                 {{studentNum}}
             </font>个学生信息
@@ -53,109 +53,117 @@
             </tfoot>
         </table>
     </div>
-    <div id="addTip" class="tip" v-show="display" v-cloak>
-        <div id="cover"></div>
-        <div class="tipBody">
-            <div style="text-align:center;padding-bottom: 10px;">
-                <h2>学生信息管理中心——添加学生</h2>
-                <a @click.prev="addTipHide()">返回</a>
-            </div>
-            <form method="post" action="">
-                <div class="form-group">
-                    <span>姓名：</span>
-                    <input type="text" name="name" v-model="formData.name">
-                </div>
-                <div class="form-group">
-                    <span>性别：</span>
-                    <input type="radio" name="sex" value="男" v-model="formData.sex" checked>男
-                    <input type="radio" name="sex" value="女" v-model="formData.sex">女
-                </div>
-                <div class="form-group">
-                    <span>年龄：</span>
-                    <input type="text" name="age" v-model="formData.age">
-                </div>
-                <div class="form-group">
-                    <span>学历：</span>
-                    <select name="edu" v-model="formData.edu">
-                        <option value="1">初中</option>
-                        <option value="2">高中</option>
-                        <option value="3" selected="selected">大专</option>
-                        <option value="4">本科</option>
-                        <option value="5">研究生</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <span>工资：</span>
-                    <input type="text" name="salary" v-model="formData.salary">
-                </div>
-                <div class="form-group">
-                    <span>奖金：</span>
-                    <input type="text" name="bonus" v-model="formData.bonus">
-                </div>
-                <div class="form-group">
-                    <span>籍贯：</span>
-                    <input type="text" name="city" v-model="formData.city">
-                </div>
 
-                <div class="form-group">
-                    &nbsp;
-                    <input type="button" value="提交" @click="addStudentData()">
-                    <input type="reset" value="重置">
+    <div id="addTip" class="tip" v-cloak>
+        <transition>
+            <div id="cover" v-show="display">
+                <div class="tipBody">
+                    <div style="text-align:center;padding-bottom: 10px;">
+                        <h2>学生信息管理中心——添加学生</h2>
+                        <a @click.prev="addTipHide()">返回</a>
+                    </div>
+                    <form method="post" action="">
+                        <div class="form-group">
+                            <span>姓名：</span>
+                            <input type="text" name="name" v-model="formData.name">
+                        </div>
+                        <div class="form-group">
+                            <span>性别：</span>
+                            <input type="radio" name="sex" value="男" v-model="formData.sex" checked>男
+                            <input type="radio" name="sex" value="女" v-model="formData.sex">女
+                        </div>
+                        <div class="form-group">
+                            <span>年龄：</span>
+                            <input type="text" name="age" v-model="formData.age">
+                        </div>
+                        <div class="form-group">
+                            <span>学历：</span>
+                            <select name="edu" v-model="formData.edu">
+                                <option value="1">初中</option>
+                                <option value="2">高中</option>
+                                <option value="3" selected="selected">大专</option>
+                                <option value="4">本科</option>
+                                <option value="5">研究生</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <span>工资：</span>
+                            <input type="text" name="salary" v-model="formData.salary">
+                        </div>
+                        <div class="form-group">
+                            <span>奖金：</span>
+                            <input type="text" name="bonus" v-model="formData.bonus">
+                        </div>
+                        <div class="form-group">
+                            <span>籍贯：</span>
+                            <input type="text" name="city" v-model="formData.city">
+                        </div>
+
+                        <div class="form-group">
+                            &nbsp;
+                            <input type="button" value="提交" @click="addStudentData()">
+                            <input type="reset" value="重置">
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
+            </div>
+        </transition>
     </div>
-    <div id="upDateTip" class="tip" v-show="display" v-cloak>
-        <div id="cover"></div>
-        <div class="tipBody">
-            <div style="text-align:center;padding-bottom: 10px;">
-                <h2>学生信息管理中心——修改学生信息</h2>
-                <a @click.prev="upDateTipHide()">返回</a>
-            </div>
-            <form method="post" action="">
-                <div class="form-group">
-                    <span>姓名：</span>
-                    <input type="text" name="name" v-model="formData.name">
-                </div>
-                <div class="form-group">
-                    <span>性别：</span>
-                    <input type="radio" name="sex" value="男" v-model="formData.sex" checked>男
-                    <input type="radio" name="sex" value="女" v-model="formData.sex">女
-                </div>
-                <div class="form-group">
-                    <span>年龄：</span>
-                    <input type="text" name="age" v-model="formData.age">
-                </div>
-                <div class="form-group">
-                    <span>学历：</span>
-                    <select name="edu" v-model="formData.edu">
-                        <option value="1">初中</option>
-                        <option value="2">高中</option>
-                        <option value="3" selected="selected">大专</option>
-                        <option value="4">本科</option>
-                        <option value="5">研究生</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <span>工资：</span>
-                    <input type="text" name="salary" v-model="formData.salary">
-                </div>
-                <div class="form-group">
-                    <span>奖金：</span>
-                    <input type="text" name="bonus" v-model="formData.bonus">
-                </div>
-                <div class="form-group">
-                    <span>籍贯：</span>
-                    <input type="text" name="city" v-model="formData.city">
-                </div>
 
-                <div class="form-group">
-                    &nbsp;
-                    <input type="button" value="提交" @click="upDate()">
-                    <input type="reset" value="重置">
+    <div id="upDateTip" class="tip" v-cloak>
+        <transition>
+            <div id="cover" v-show="display">
+                <div class="tipBody">
+                    <div style="text-align:center;padding-bottom: 10px;">
+                        <h2>学生信息管理中心——修改学生信息</h2>
+                        <a @click.prev="upDateTipHide()">返回</a>
+                    </div>
+                    <form method="post" action="">
+                        <div class="form-group">
+                            <span>姓名：</span>
+                            <input type="text" name="name" v-model="formData.name">
+                        </div>
+                        <div class="form-group">
+                            <span>性别：</span>
+                            <input type="radio" name="sex" value="男" v-model="formData.sex" checked>男
+                            <input type="radio" name="sex" value="女" v-model="formData.sex">女
+                        </div>
+                        <div class="form-group">
+                            <span>年龄：</span>
+                            <input type="text" name="age" v-model="formData.age">
+                        </div>
+                        <div class="form-group">
+                            <span>学历：</span>
+                            <select name="edu" v-model="formData.edu">
+                                <option value="1">初中</option>
+                                <option value="2">高中</option>
+                                <option value="3" selected="selected">大专</option>
+                                <option value="4">本科</option>
+                                <option value="5">研究生</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <span>工资：</span>
+                            <input type="text" name="salary" v-model="formData.salary">
+                        </div>
+                        <div class="form-group">
+                            <span>奖金：</span>
+                            <input type="text" name="bonus" v-model="formData.bonus">
+                        </div>
+                        <div class="form-group">
+                            <span>籍贯：</span>
+                            <input type="text" name="city" v-model="formData.city">
+                        </div>
+
+                        <div class="form-group">
+                            &nbsp;
+                            <input type="button" value="提交" @click="upDate()">
+                            <input type="reset" value="重置">
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
+            </div>
+        </transition>
     </div>
 </body>
 <script src="./JS/index.js"></script>
