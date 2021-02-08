@@ -72,6 +72,10 @@ var app = new Vue({
         this.load(1);
     },
 })
+Vue.directive('focus',
+    function (el) {
+        el.focus();
+    });
 var addTip = new Vue({
     el: "#addTip",
     data: {
