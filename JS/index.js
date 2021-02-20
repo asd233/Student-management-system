@@ -1,3 +1,16 @@
+Vue.directive('focus',
+    function (el) {
+        el.focus();
+    });
+
+Vue.component("tipBody", {
+    template: "#tipBody",
+    props: {
+        display: Boolean,
+        formData: Object,
+    }
+})
+
 var app = new Vue({
     el: "#app",
     data: {
@@ -72,10 +85,7 @@ var app = new Vue({
         this.load(1);
     },
 })
-Vue.directive('focus',
-    function (el) {
-        el.focus();
-    });
+
 var addTip = new Vue({
     el: "#addTip",
     data: {
@@ -101,8 +111,10 @@ var addTip = new Vue({
                     return;
                 }
             }
+            loading.display = true;
             axios.post("./PHP/add.php", this.formData).then(
                 function (response) {
+                    loading.display = false;
                     //清空表格
                     for (const key in addTip.formData) {
                         addTip.formData[key] = "";
@@ -115,6 +127,7 @@ var addTip = new Vue({
     }
 
 })
+
 var upDateTip = new Vue({
     el: "#upDateTip",
     data: {
@@ -141,16 +154,21 @@ var upDateTip = new Vue({
                     return;
                 }
             }
+            loading.display = true;
             axios.post("./PHP/update.php", this.formData).then(
                 function (response) {
-                    //清空表格
-                    for (const key in addTip.formData) {
-                        upDateTip.formData[key] = "";
-                    }
+                    loading.display = false;
                     alert(response.data);
                     app.load(app.checkPageIndex);
                 }
             )
         }
+    }
+})
+
+var loading = new Vue({
+    el: "#loading",
+    data: {
+        display: false
     }
 })
