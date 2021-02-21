@@ -8,7 +8,6 @@
     </link>
     <script src="../lib/node_modules/_vue@2.6.12@vue/dist/vue.js"></script>
     <script src="../lib/node_modules/_axios@0.21.1@axios/dist/axios.js"></script>
-    <script src="../lib/node_modules/_jquery@3.5.1@jquery/dist/jquery.js"></script>
     <link rel="stylesheet" href="./CSS/style.css">
 </head>
 
@@ -38,7 +37,7 @@
                     <td v-for="(studentValue,y) in students[i]">
                         {{studentValue}}
                     </td>
-                    <td class="warning">
+                    <td class="warning" :index="i">
                         <a @click.prev="upDateTipShow($event)">修改</a>
                         <a @click.prev="confirmDel(student.id)">删除</a>
                     </td>

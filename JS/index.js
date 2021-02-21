@@ -40,7 +40,7 @@ var app = new Vue({
         },
         upDateTipShow(event) {
             upDateTip.display = true;
-            upDateTip.formData = Object.assign({}, this.students[$(event.target).parent().parent().index()]);
+            upDateTip.formData = Object.assign({}, this.students[event.target.parentNode.attributes.index.nodeValue]);
         },
         load(pagesIndex) {
             this.checkPageIndex = pagesIndex;
