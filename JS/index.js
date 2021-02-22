@@ -14,10 +14,15 @@ Vue.component("tipBody", {
 var app = new Vue({
     el: "#app",
     data: {
+        //数据库中共有多少学生信息
         studentNum: 0,
+        //页面上最多有多少个学生
         pagesMax: 0,
+        //当前渲染在页面上的页码
         pagesNum: [],
+        //当前选中的页数
         checkPageIndex: 1,
+        //学生信息
         students: []
     },
     methods: {
@@ -39,10 +44,12 @@ var app = new Vue({
             addTip.display = true;
         },
         upDateTipShow(event) {
+            //组件显示后，获取点击的那一行的数据并显示到表单中
             upDateTip.display = true;
             upDateTip.formData = Object.assign({}, this.students[event.target.parentNode.attributes.index.nodeValue]);
         },
         load(pagesIndex) {
+            //根据页码从后端获取学生数据
             this.checkPageIndex = pagesIndex;
             let url = "./PHP/list.php?page=" + pagesIndex;
             axios.get(url).then(function (response) {
@@ -82,6 +89,7 @@ var app = new Vue({
         },
     },
     created() {
+        //页面加载完成后默认加载第一页数据
         this.load(1);
     },
 })
@@ -105,12 +113,14 @@ var addTip = new Vue({
             this.display = false;
         },
         addStudentData() {
+            //判断是否完整填写数据
             for (const key in this.formData) {
                 if (this.formData[key] === "") {
                     alert('请完整填写数据');
                     return;
                 }
             }
+            //显示加载提示
             loading.display = true;
             axios.post("./PHP/add.php", this.formData).then(
                 function (response) {
@@ -120,6 +130,7 @@ var addTip = new Vue({
                         addTip.formData[key] = "";
                     }
                     alert(response.data);
+                    //学生信息添加完成后进行局部刷新
                     app.load(app.checkPageIndex);
                 }
             )
