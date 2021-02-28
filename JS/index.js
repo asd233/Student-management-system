@@ -49,6 +49,7 @@ var app = new Vue({
             upDateTip.formData = Object.assign({}, this.students[event.target.parentNode.attributes.index.nodeValue]);
         },
         load(pagesIndex) {
+            loading.display = true;
             //根据页码从后端获取学生数据
             this.checkPageIndex = pagesIndex;
             let url = "./PHP/list.php?page=" + pagesIndex;
@@ -81,16 +82,20 @@ var app = new Vue({
                         start++;
                     }
                 }
+                loading.display = false;
             }).catch(
                 function () {
                     alert('数据获取失败');
+                    loading.display = false;
                 }
             )
         },
     },
     created() {
         //页面加载完成后默认加载第一页数据
-        this.load(1);
+        Vue.nextTick(() => {
+            this.load(1)
+        })
     },
 })
 
