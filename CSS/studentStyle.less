@@ -1,0 +1,160 @@
+[v-cloak] {
+    display: none;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity .5s ease;
+}
+
+.v-enter,
+.v-leave-to {
+    opacity: 0;
+}
+
+a {
+    cursor: pointer;
+
+    color: rgb(58, 58, 245);
+}
+
+.cover {
+    position: absolute;
+    z-index: 50;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(63, 63, 63, .418);
+}
+
+form {
+    width: 225px;
+    margin: 0 auto;
+}
+
+.tip {
+    width: 100%;
+    height: 100%;
+
+    .tipBody {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+
+        width: 500px;
+        height: 420px;
+
+        transform: translateX(-50%);
+
+        border: 1px solid #000000;
+        border-radius: 15px;
+        background-color: #ffffff;
+    }
+}
+
+.pageList {
+    a {
+        margin: 0 3px;
+        padding: 3px 8px;
+
+        text-decoration: none;
+
+        border: 1px solid #cccccc;
+
+        &:hover {
+            color: white;
+            background-color: #66ccff;
+        }
+    }
+
+    span {
+        padding: 3px 8px;
+    }
+}
+
+#loading {
+    width: 100%;
+    height: 100%;
+
+    #cover {
+        z-index: 99;
+    }
+}
+
+.loadingBody {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 200px;
+    height: 200px;
+    margin: auto;
+
+    border: 1px solid #000000;
+    border-radius: 15px;
+    background-color: #ffffff;
+
+    div {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 40px;
+        left: 0;
+
+        width: 50px;
+        height: 50px;
+        margin: auto;
+
+        border-radius: 25px;
+        background-color: #66ccff;
+
+        &:nth-child(1) {
+            animation: load1 1s ease 0s infinite;
+        }
+
+        &:nth-child(2) {
+            animation: load2 1s ease 0s infinite;
+        }
+    }
+
+    p {
+        font-size: 16px;
+
+        margin-top: 110px;
+
+        text-align: center;
+    }
+}
+
+@keyframes load1 {
+    0% {
+        transform: scale(0,0);
+
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1,1);
+
+        opacity: .6;
+    }
+}
+
+@keyframes load2 {
+    0% {
+        transform: scale(1,1);
+
+        opacity: .6;
+    }
+
+    100% {
+        transform: scale(0,0);
+
+        opacity: 1;
+    }
+}

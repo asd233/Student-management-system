@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>学生信息管理中心</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    </link>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./CSS/studentStyle.css">
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <div style="text-align:center;padding-bottom: 10px;">
+            <h2>学生信息管理中心</h2>
+            <a class="btn btn-default" @click.prevent="addTipTrigger()">添加学生</a>
+            共有<font color=red>
+                {{studentNum}}
+            </font>个学生信息
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>学历</th>
+                <th>工资</th>
+                <th>奖金</th>
+                <th>籍贯</th>
+                <th class="warning">操作选项</th>
+            </thead>
+            <tbody>
+                <tr v-for="(student,i) in students" :key="student.id">
+                    <td v-for="(studentValue,y) in students[i]">
+                        {{studentValue}}
+                    </td>
+                    <td class="warning" :index="i">
+                        <a @click.prevent="upDateTipShow($event)" class="btn btn-default" href="#" role="button">修改</a>
+                        &nbsp;
+                        <a @click.prevent="confirmDel(student.id)" class="btn btn-default" href="#" role="button">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <td colspan="9" align="center" height="50" class="pageList">
+                    <a class="btn btn-default" v-for="pages in pagesNum" @click="load(pages)">
+                        {{pages}}
+                    </a>
+                </td>
+            </tfoot>
+        </table>
+        <!-- 新增学生信息 -->
+        <tip-body :display="tipData.addTipDisplay" :form-data="tipData.formData" @hide="addTipTrigger()"
+            @submit="addStudentData()">
+        </tip-body>
+        <!-- 修改学生信息 -->
+        <tip-body :display="tipData.updateTipDisplay" :form-data="tipData.formData" @hide="upDateTipHide()"
+            @submit="upDate()">
+        </tip-body>
+        <loading :display="loadingDisplay"></loading>
+    </div>
+
+    <!-- 加载提示窗组件 -->
+    <template id="loading">
+        <transition>
+            <div class="cover" v-show="display">
+                <div class="loadingBody">
+                    <div></div>
+                    <div></div>
+                    <p>加载中...</p>
+                </div>
+            </div>
+        </transition>
+    </template>
+
+    <!-- 提示窗组件 -->
+    <template id="tipBody">
+        <transition>
+            <div class="cover" v-show="display">
+                <div class="tip">
+                    <div class="tipBody">
+                        <div style="text-align:center;padding-bottom: 10px;">
+                            <h2>学生信息管理中心——修改学生信息</h2>
+                            <a @click.prev="$emit('hide')">返回</a>
+                        </div>
+                        <form method="post" action="">
+                            <div class="form-group">
+                                <span>姓名：</span>
+                                <input type="text" name="name" v-model="formData.name">
+                            </div>
+                            <div class="form-group">
+                                <span>性别：</span>
+                                <input type="radio" name="sex" value="男" v-model="formData.sex" checked>男
+                                <input type="radio" name="sex" value="女" v-model="formData.sex">女
+                            </div>
+                            <div class="form-group">
+                                <span>年龄：</span>
+                                <input type="text" name="age" v-model="formData.age">
+                            </div>
+                            <div class="form-group">
+                                <span>学历：</span>
+                                <select name="edu" v-model="formData.edu">
+                                    <option value="1">初中</option>
+                                    <option value="2">高中</option>
+                                    <option value="3" selected="selected">大专</option>
+                                    <option value="4">本科</option>
+                                    <option value="5">研究生</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <span>工资：</span>
+                                <input type="text" name="salary" v-model="formData.salary">
+                            </div>
+                            <div class="form-group">
+                                <span>奖金：</span>
+                                <input type="text" name="bonus" v-model="formData.bonus">
+                            </div>
+                            <div class="form-group">
+                                <span>籍贯：</span>
+                                <input type="text" name="city" v-model="formData.city">
+                            </div>
+
+                            <div class="form-group" style="
+                            text-align: center;
+                        ">
+                                &nbsp;
+                                <input type="button" value="提交" @click="$emit('submit')">
+                                <input type="reset" value="重置">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </template>
+
+
+
+</body>
+<script src="./JS/studentManage.js"></script>
+
+</html>

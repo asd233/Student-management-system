@@ -3,7 +3,7 @@
     require_once("./conn.php");
     
     //每页显示多少条
-    $pagesize = 5;
+    $pagesize = 15;
     //获取当前页码和计算开始行号
     $page = isset($_GET['page']) ? $_GET['page'] : 1; //当前页码
     $startRow = ($page-1)*$pagesize; //开始行号
